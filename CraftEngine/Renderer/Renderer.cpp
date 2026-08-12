@@ -192,20 +192,20 @@ namespace Craft
 				frame->sortingOrderArray[index] = command.sortingOrder;
 			}
 
-			//윈도우 콘솔 핸들.
-			HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+			////윈도우 콘솔 핸들.
+			//HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
 
-			// 그릴 위치로 이동(콘솔 좌표 이동).
-			SetConsoleCursorPosition(handle, command.position);
+			//// 그릴 위치로 이동(콘솔 좌표 이동).
+			//SetConsoleCursorPosition(handle, command.position);
 
-			// 글자 색상 설정.
-			SetConsoleTextAttribute(handle, static_cast<WORD>(command.color));
+			//// 글자 색상 설정.
+			//SetConsoleTextAttribute(handle, static_cast<WORD>(command.color));
 
-			// @Temp: 그리기.
-			std::cout << command.image;
+			//// @Temp: 그리기.
+			//std::cout << command.image;
 
-			// 콘솔 색상 복원.
-			SetConsoleTextAttribute(handle, static_cast<WORD>(Color::White));
+			//// 콘솔 색상 복원.
+			//SetConsoleTextAttribute(handle, static_cast<WORD>(Color::White));
 		}
 
 		// 앞에서 설정한 2차원 배열을 콘솔에 그리기
@@ -214,11 +214,11 @@ namespace Craft
 		// 렌더큐 비우기.
 		renderQueue.clear();
 
-		// 콘솔 색상 초기화
-		SetConsoleTextAttribute(
-			GetCurrentBuffer()->GetBuffer(),
-			static_cast<DWORD>(Color::White)
-		);
+		//// 콘솔 색상 초기화
+		//SetConsoleTextAttribute(
+		//	GetCurrentBuffer()->GetBuffer(),
+		//	static_cast<DWORD>(Color::White)
+		//);
 	}
 
 	void Renderer::Present()

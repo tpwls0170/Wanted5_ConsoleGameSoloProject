@@ -3,10 +3,15 @@
 #include <Input/Input.h>
 #include <Level/GameLevel.h>
 #include <Actor/Bomb/Bomb.h>
+#include <Actor/Bomb/Explosion.h>
+#include <Actor/BreakWall.h>
+#include <Actor/Wall.h>
 
 using namespace Craft;
 Player::Player(const Craft::Vector2& position)
-	: Actor("P",position,Color::Green)
+	: Actor("P",position,Color::Green), 
+    xPosition(static_cast<float>(position.x)),
+    yPosition(static_cast<float>(position.y))
 {
     sortingOrder = 10;
 }
@@ -16,27 +21,36 @@ void Player::Tick(float deltaTime)
 	// 상위 계층의 tick 호출.
 	super::Tick(deltaTime);
 
-    float directionX = 0.0f;
-    float directionY = 0.0f;
+    // 이동 처리를 위해 GameLevel 객체 얻어오기.
+   // 다운 캐스팅 - 위험함 -> 형변환 실패하면 null 반환.
+    std::shared_ptr<GameLevel> level = Cast<GameLevel>(GetOwner());
+
+    Vector2 direction = Craft::Vector2::Zero;
 
     if (Input::Get().GetKey(VK_RIGHT))
     {
-        directionX += 1;
+        direction.x += 1;
     }
 
     if (Input::Get().GetKey(VK_LEFT))
     {
-        directionX -= 1;
+        direction.x -= 1;
     }
 
     if (Input::Get().GetKey(VK_UP))
     {
-        directionY -= 1;
+        direction.y -= 1;
     }
 
     if (Input::Get().GetKey(VK_DOWN))
     {
-        directionY += 1;
+        direction.y += 1;
+    }
+    Vector2 nextPosition = GetPosition() + direction;
+
+    if (!level->CanMove(nextPosition))
+    {
+        direction = Vector2::Zero;
     }
 
     if (Input::Get().GetKey(VK_SPACE))
@@ -50,13 +64,13 @@ void Player::Tick(float deltaTime)
         }
     }
 
-    Move(directionX, directionY, deltaTime);
+    Move(direction, deltaTime);
 }
 
-void Player::Move(float directionX, float directionY, float deltaTime)
+void Player::Move(Craft::Vector2& position, float deltaTime)
 {
-    xPosition += directionX * moveSpeed * deltaTime;
-    yPosition += directionY * moveSpeed * deltaTime;
+    xPosition += position.x * moveSpeed * deltaTime;
+    yPosition += position.y * moveSpeed * deltaTime;
 
     if (xPosition < 0)
     {
@@ -83,10 +97,16 @@ void Player::Move(float directionX, float directionY, float deltaTime)
     newPosition.x = static_cast<int>(xPosition);
     newPosition.y = static_cast<int>(yPosition);
 
-	SetPosition(newPosition);
+    SetPosition(newPosition);
 }
 
-void Player::DecreaseBombCount()
+void Player::OnCollision(const std::shared_ptr<Actor>& other)
 {
-    bombCount--;
+    super::OnCollision(other);
+
+    if (other->IsTypeOf<Explosion>())
+    {
+        Destroy();
+        QuitGame();
+    }
 }

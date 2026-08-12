@@ -89,6 +89,13 @@ void GameLevel::LoadMap(const std::string & fileName)
 
 			// 플레이어.
 		case 'p':
+			OutputDebugStringA(
+				("Player Position : "
+					+ std::to_string(position.x)
+					+ ", "
+					+ std::to_string(position.y)
+					+ "\n").c_str()
+			);
 			// 플레이어 액터 생성.
 			SpawnActor<Player>(position);
 			break;
@@ -109,4 +116,26 @@ void GameLevel::LoadMap(const std::string & fileName)
 	// 파일 닫기.
 	fclose(file);
 	file = nullptr;
+}
+
+bool GameLevel::CanMove(const Craft::Vector2& nextPosition)
+{
+	if (isGameClear)
+		return false;
+
+	std::vector<std::shared_ptr<Actor>> wallList;
+
+	for (const std::shared_ptr<Actor>& actor : actorList)
+	{
+		if (actor->IsTypeOf<Wall>() ||
+			actor->IsTypeOf<BreakWall>())
+		{
+			if (actor->GetPosition() == nextPosition)
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
 }

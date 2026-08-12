@@ -7,10 +7,11 @@ class Player : public Craft::Actor
 		
 public:
 	Player(const Craft::Vector2& position);
-	void DecreaseBombCount();
+	inline void DecreaseBombCount() { bombCount--; }
 private:
 	virtual void Tick(float deltaTime) override;
-	void Move(float directionX, float directionY, float deltaTime);
+	void Move(Craft::Vector2& position, float deltaTime);
+	virtual void OnCollision(const std::shared_ptr<Actor>& other) override;
 
 private:
 	int bombCount = 0;

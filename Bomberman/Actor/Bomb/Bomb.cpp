@@ -27,6 +27,27 @@ void Bomb::Explode()
 		ownerPlayer->DecreaseBombCount();
 		this->Destroy();
 		auto level = GetOwner();
+
+		Vector2 directions[] =
+		{
+			Vector2(1, 0),
+			Vector2(-1, 0),
+			Vector2(0, 1),
+			Vector2(0,-1)
+		};
+
 		level->SpawnActor<Explosion>(GetPosition());
+		for (const Vector2& direction : directions)
+		{
+			for (int i = 1; i <= range; ++i)
+			{
+				Vector2 position = GetPosition();
+
+				position.x += direction.x * i;
+				position.y += direction.y * i;
+
+				level->SpawnActor<Explosion>(position);
+			}
+		}
 	}
 }

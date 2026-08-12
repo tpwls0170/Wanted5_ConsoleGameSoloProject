@@ -16,4 +16,5 @@ private:
 	int range = 1;
 	float explosionTimer = 2.5f;
 	float elapsedTime = 0;
+	float directions[];
 };
