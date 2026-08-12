@@ -27,7 +27,7 @@
     <ClCompile Include="Actor\Enemy.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Actor\Boob.cpp">
+    <ClCompile Include="Actor\Bomb\Bomb.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Actor\Item.cpp">
@@ -42,6 +42,9 @@
     <ClCompile Include="Actor\BreakWall.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Actor\Bomb\Explosion.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Level\GameLevel.h">
@@ -53,7 +56,7 @@
     <ClInclude Include="Actor\Enemy.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Actor\Boob.h">
+    <ClInclude Include="Actor\Bomb\Bomb.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Actor\Item.h">
@@ -66,6 +69,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Actor\BreakWall.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\Bomb\Explosion.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

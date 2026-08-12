@@ -9,7 +9,7 @@ namespace Craft
 		const Vector2& position,
 		Color color)
 		: image(image), position(position), color(color),
-		width(static_cast<int>(image.length()))
+		width(static_cast<int>(image.length())), hight(1)
 	{}
 
 	Actor::~Actor()

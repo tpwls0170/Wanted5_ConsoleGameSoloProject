@@ -94,6 +94,9 @@ namespace Craft
 		// 글자 길이.
 		int width = 0;
 
+		// 글자 높이
+		int hight = 0;
+
 		// 렌더링 순서.
 		int sortingOrder = 0;
 

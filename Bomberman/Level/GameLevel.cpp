@@ -3,9 +3,8 @@
 #include <Actor/Enemy.h>
 #include <Actor/Wall.h>
 #include <Actor/BreakWall.h>
+#include <Actor/Bomb/Bomb.h>
 #include <cassert>
-
-#include <iostream>
 
 using namespace Craft;
 void GameLevel::OnInitialized()

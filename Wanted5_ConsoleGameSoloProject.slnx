@@ -1,12 +1,7 @@
 <Solution>
   <Configurations>
     <Platform Name="x64" />
-    <Platform Name="x86" />
   </Configurations>
-  <Project Path="Bomberman/Bomberman.vcxproj" Id="367af087-b9a7-4af0-819c-00ff5b3f08da">
-    <Build Solution="*|x86" Project="false" />
-  </Project>
-  <Project Path="CraftEngine/CraftEngine.vcxproj" Id="4153e88a-37fa-4c8e-9e14-2f4ba85b231e">
-    <Platform Project="x64" />
-  </Project>
+  <Project Path="Bomberman/Bomberman.vcxproj" Id="367af087-b9a7-4af0-819c-00ff5b3f08da" />
+  <Project Path="CraftEngine/CraftEngine.vcxproj" Id="4153e88a-37fa-4c8e-9e14-2f4ba85b231e" />
 </Solution>
