@@ -5,7 +5,9 @@
 #include <Actor/Bomb/Bomb.h>
 #include <Actor/Bomb/Explosion.h>
 #include <Actor/BreakWall.h>
+#include <Actor/Enemy.h>
 #include <Actor/Wall.h>
+#include <Game/Game.h>
 
 using namespace Craft;
 Player::Player(const Craft::Vector2& position)
@@ -16,10 +18,27 @@ Player::Player(const Craft::Vector2& position)
     sortingOrder = 10;
 }
 
+void Player::IncreaseBombRange()
+{
+    if (bombRange >= 10)
+        return;
+
+    bombRange++;
+}
+
 void Player::Tick(float deltaTime)
 {
 	// 상위 계층의 tick 호출.
 	super::Tick(deltaTime);
+
+    // ESC 종료 처리.
+    if (Input::Get().GetKeyDown(VK_ESCAPE))
+    {
+        // 메뉴 토글.
+        Game& game = dynamic_cast<Game&>(Engine::Get());
+        game.ToggleMenu();
+        return;
+    }
 
     // 이동 처리를 위해 GameLevel 객체 얻어오기.
    // 다운 캐스팅 - 위험함 -> 형변환 실패하면 null 반환.
@@ -53,12 +72,12 @@ void Player::Tick(float deltaTime)
         direction = Vector2::Zero;
     }
 
-    if (Input::Get().GetKey(VK_SPACE))
+    if (Input::Get().GetKeyDown(VK_SPACE))
     {
         if (bombCount < bombMaxCount)
         {
             auto level = GetOwner().get();
-            auto bomb = level->SpawnActor<Bomb>(position);
+            auto bomb = level->SpawnActor<Bomb>(position,bombRange);
             bomb->SetrOwnerPlayer(this);
             bombCount++;
         }
@@ -104,7 +123,7 @@ void Player::OnCollision(const std::shared_ptr<Actor>& other)
 {
     super::OnCollision(other);
 
-    if (other->IsTypeOf<Explosion>())
+    if (other->IsTypeOf<Explosion>() || other->IsTypeOf<Enemy>())
     {
         Destroy();
         QuitGame();

@@ -4,7 +4,9 @@
 #include <Actor/Wall.h>
 #include <Actor/BreakWall.h>
 #include <Actor/Bomb/Bomb.h>
+#include <Actor/Item.h>
 #include <cassert>
+#include <random>
 
 using namespace Craft;
 void GameLevel::OnInitialized()
@@ -89,13 +91,6 @@ void GameLevel::LoadMap(const std::string & fileName)
 
 			// 플레이어.
 		case 'p':
-			OutputDebugStringA(
-				("Player Position : "
-					+ std::to_string(position.x)
-					+ ", "
-					+ std::to_string(position.y)
-					+ "\n").c_str()
-			);
 			// 플레이어 액터 생성.
 			SpawnActor<Player>(position);
 			break;
@@ -138,4 +133,76 @@ bool GameLevel::CanMove(const Craft::Vector2& nextPosition)
 	}
 
 	return true;
+}
+
+ExplosionResult GameLevel::CanExplosition(const Craft::Vector2& nextPosition)
+{
+	if (isGameClear)
+		return ExplosionResult::Wall;
+
+	std::vector<std::shared_ptr<Actor>> wallList;
+
+	for (const std::shared_ptr<Actor>& actor : actorList)
+	{
+		if (actor->GetPosition() != nextPosition)
+		{
+			continue;
+		}
+
+		if (actor->IsTypeOf<Wall>())
+		{
+			if (actor->GetPosition() == nextPosition)
+			{
+				return ExplosionResult::Wall;
+			}
+		}
+		else if (actor->IsTypeOf<BreakWall>())
+		{
+			if (actor->GetPosition() == nextPosition)
+			{
+				return ExplosionResult::BreakWall;
+			}
+		}
+	}
+
+	return ExplosionResult::CanExplode;
+}
+
+void GameLevel::DestoryBreakWall(const Craft::Vector2& position)
+{
+	std::random_device rd;
+
+	// random_device 를 통해 난수 생성 엔진을 초기화 한다.
+	std::mt19937 gen(rd());
+
+	// 0 부터 99 까지 균등하게 나타나는 난수열을 생성하기 위해 균등 분포 정의.
+	std::uniform_int_distribution<int> randomItem(0, 1);
+	std::uniform_int_distribution<int> itemCreateRandom(0, 99);
+	int randomNum = randomItem(gen);
+	if (randomNum == 0)
+	{
+		if (itemCreateRandom(gen) <= 30)
+		{
+			SpawnActor<Item>(position, "Range");
+		}
+	}
+	else if (randomNum == 1)
+	{
+		if (itemCreateRandom(gen) <= 40)
+		{
+			SpawnActor<Item>(position, "Count");
+		}
+	}
+}
+
+std::shared_ptr<Craft::Actor> GameLevel::GetPlayerPosition()
+{
+	for (const std::shared_ptr<Actor>& actor : actorList)
+	{
+		if (actor->IsTypeOf<Player>() == false)
+			continue;
+		
+		return actor;
+	}
+	return nullptr;
 }
