@@ -30,7 +30,13 @@ void Enemy::Tick(float deltaTime)
     auto player = level->GetPlayerPosition();
 
     Vector2 enemyPosition = GetPosition();
-    Vector2 playerPosition = player->GetPosition();
+    
+
+    Vector2 playerPosition = Craft::Vector2::Zero;
+    if (player != nullptr)
+    {
+       playerPosition = player->GetPosition();
+    }
 
     // 플레이어와의 거리
     int distance =
@@ -128,5 +134,9 @@ void Enemy::Move(Craft::Vector2 & position, float deltaTime)
 void Enemy::OnCollision(const std::shared_ptr<Actor>&other)
 {
     if (other->IsTypeOf<Explosion>())
+    {
+        std::shared_ptr<GameLevel> level = Cast<GameLevel>(GetOwner());
+        level->DestoryEnemy();
         Destroy();
+    }
 }

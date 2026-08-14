@@ -7,12 +7,25 @@
 #include <Actor/Item.h>
 #include <cassert>
 #include <random>
+#include <Game/Game.h>
 
 using namespace Craft;
 void GameLevel::OnInitialized()
 {
 	Level::OnInitialized();
 	LoadMap("BombermanMap.txt");
+}
+
+void GameLevel::Tick(float deltaTime)
+{
+	Level::Tick(deltaTime);
+	if (stageMonsterCount <= 0)
+	{
+		isGameClear = true;
+		Game& game = dynamic_cast<Game&>(Engine::Get());
+		game.ToggleMenu(State::GamePlay, State::ClearEnding);
+		return;
+	}
 }
 
 void GameLevel::LoadMap(const std::string & fileName)
@@ -97,6 +110,7 @@ void GameLevel::LoadMap(const std::string & fileName)
 			// 적
 		case 'e':
 			SpawnActor<Enemy>(position);
+			stageMonsterCount++;
 			break;
 		}
 
@@ -205,4 +219,11 @@ std::shared_ptr<Craft::Actor> GameLevel::GetPlayerPosition()
 		return actor;
 	}
 	return nullptr;
+}
+
+void GameLevel::ResetGame()
+{
+	actorList.clear();
+	LoadMap("BombermanMap.txt");
+	isGameClear = false;
 }

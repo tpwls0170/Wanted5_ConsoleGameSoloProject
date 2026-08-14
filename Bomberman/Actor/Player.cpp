@@ -36,7 +36,7 @@ void Player::Tick(float deltaTime)
     {
         // 메뉴 토글.
         Game& game = dynamic_cast<Game&>(Engine::Get());
-        game.ToggleMenu();
+        game.ToggleMenu(State::GamePlay , State::Menu);
         return;
     }
 
@@ -126,6 +126,7 @@ void Player::OnCollision(const std::shared_ptr<Actor>& other)
     if (other->IsTypeOf<Explosion>() || other->IsTypeOf<Enemy>())
     {
         Destroy();
-        QuitGame();
+        Game& game = dynamic_cast<Game&>(Engine::Get());
+        game.ToggleMenu(State::GamePlay, State::GameOver);
     }
 }

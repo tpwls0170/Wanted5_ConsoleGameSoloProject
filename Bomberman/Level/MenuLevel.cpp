@@ -15,7 +15,7 @@ MenuLevel::MenuLevel()
 	{
 		// 메뉴 토글 함수 호출.
 		Game& game = dynamic_cast<Game&>(Engine::Get());
-		game.ToggleMenu();
+		game.ToggleMenu(State::Menu, State::GamePlay);
 	}
 		)
 	);
@@ -37,14 +37,14 @@ void MenuLevel::Tick(float deltaTime)
 	Level::Tick(deltaTime);
 
 	// 입력 처리(위/아래 방향키, 엔터, ESC 키).
-	if (Input::Get().GetKeyDown(VK_ESCAPE))
-	{
-		Game& game = dynamic_cast<Game&>(Engine::Get());
-		game.ToggleMenu();
+	//if (Input::Get().GetKeyDown(VK_ESCAPE))
+	//{
+		//Game& game = dynamic_cast<Game&>(Engine::Get());
+		//game.ToggleMenu();
 
 		// 인덱스 초기화.
-		currentIndex = 0;
-	}
+		//currentIndex = 0;
+	//}
 
 	// 배열의 요소 개수.
 	const int length = static_cast<int>(itemList.size());
