@@ -64,7 +64,7 @@ void GameLevel::LoadMap(const std::string & fileName)
 	
 	// 문자열에 저장된 값을 접근할 때 사용할 인덱스.
 	int index = 0;
-
+	stageMonsterCount = 0;
 	Vector2 position;
 	while (true)
 	{

@@ -70,7 +70,7 @@ void Enemy::Tick(float deltaTime)
         std::random_device rd;
         std::mt19937 gen(rd());
 
-        std::uniform_int_distribution<int> randMove(0, 4);
+        std::uniform_int_distribution<int> randMove(0, 3);
 
         int randomNum = randMove(gen);
 
